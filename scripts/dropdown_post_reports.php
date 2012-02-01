@@ -137,8 +137,8 @@ $usercnt = 1;
 
 while ($row3=mysql_fetch_array($result3)) {
 $users = "".$row3['empfullname']."";
-echo "users_select.options[$usercnt] = new Option(\"$users\");\n";
-echo "users_select.options[$usercnt].value = \"$users\";\n";
+$displayname = "".$row3['displayname']."";
+echo "users_select.options[$usercnt] = new Option(\"$displayname\", \"$users\");\n";
 $usercnt++;
 } // ends while $row3 for users
 ?>

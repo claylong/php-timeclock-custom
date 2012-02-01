@@ -134,7 +134,7 @@ if ($links == "none") {
     echo "        <tr><td height=20></td></tr>\n";
 }
 
-echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
+echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Timeclock Actions:</td></tr>\n";
 echo "        <tr><td height=7></td></tr>\n";
 echo "        <tr><td height=4 align=left valign=middle class=misc_items>Name:</td></tr>\n";
 echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
@@ -143,48 +143,62 @@ echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
 
 if ($show_display_name == "yes") {
 
-    $query = "select displayname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-    $emp_name_result = mysql_query($query);
-    echo "              <select name='left_displayname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
+	if ($show_user_dropdown == "yes") {
+		$query = "select displayname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
+		$emp_name_result = mysql_query($query);
+		echo "              <select name='left_displayname' tabindex=1>\n";
+		echo "              <option value =''>...</option>\n";
 
-    while ($row = mysql_fetch_array($emp_name_result)) {
+		while ($row = mysql_fetch_array($emp_name_result)) {
 
-        $abc = stripslashes("".$row['displayname']."");
+			$abc = stripslashes("".$row['displayname']."");
 
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
-            echo "              <option selected>$abc</option>\n";
-        } else {
-            echo "              <option>$abc</option>\n";
-        }
+			if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
+				echo "              <option selected>$abc</option>\n";
+			} else {
+				echo "              <option>$abc</option>\n";
+			}
 
-    }
+		}
 
-    echo "              </select></td></tr>\n";
-    mysql_free_result($emp_name_result);
-    echo "        <tr><td height=7></td></tr>\n";
+		mysql_free_result($emp_name_result);
+
+	} else {
+		// username label only
+		echo "<strong>".$_SESSION['valid_user_displayname']. "</strong>\n";
+		echo "<input type='hidden' name='left_displayname' value='".$_SESSION['valid_user_displayname']."' />";
+	}
+	
+	echo "              </select></td></tr>\n";
+	echo "        <tr><td height=7></td></tr>\n";
 
 } else {
+	if ($show_user_dropdown == "yes") {
+		$query = "select empfullname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
+		$emp_name_result = mysql_query($query);
+		echo "              <select name='left_fullname' tabindex=1>\n";
+		echo "              <option value =''>...</option>\n";
 
-    $query = "select empfullname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-    $emp_name_result = mysql_query($query);
-    echo "              <select name='left_fullname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
+		while ($row = mysql_fetch_array($emp_name_result)) {
 
-    while ($row = mysql_fetch_array($emp_name_result)) {
+			$def = stripslashes("".$row['empfullname']."");
+			if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
+				echo "              <option selected>$def</option>\n";
+			} else {
+				echo "              <option>$def</option>\n";
+			}
 
-        $def = stripslashes("".$row['empfullname']."");
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
-            echo "              <option selected>$def</option>\n";
-        } else {
-            echo "              <option>$def</option>\n";
-        }
+		}
 
-    }
-
-    echo "              </select></td></tr>\n";
-    mysql_free_result($emp_name_result);
-    echo "        <tr><td height=7></td></tr>\n";
+		mysql_free_result($emp_name_result);
+	} else {
+		// username label only
+		echo "<strong>".$_SESSION['valid_user_displayname']. "</strong>\n";
+		echo "<input type='hidden' name='left_fullname' value='".$_SESSION['valid_user']."' />";
+	}
+	
+	echo "              </select></td></tr>\n";
+	echo "        <tr><td height=7></td></tr>\n";
 }
 
 // determine whether to use encrypted passwords or not //
@@ -219,18 +233,20 @@ echo "        <tr><td height=4 align=left valign=middle class=misc_items>Notes:<
 echo "        <tr><td height=4 align=left valign=middle class=misc_items>";  
 echo          "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4></td></tr>\n";
 
-if (!isset($_COOKIE['remember_me'])) {
-    echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left 
-                    class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
-                    </table></td><tr>\n";
-} 
+if ($use_ad_auth == "no") {
+	if (!isset($_COOKIE['remember_me'])) {
+		echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
+					  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left 
+						class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
+						</table></td><tr>\n";
+	} 
 
-elseif (isset($_COOKIE['remember_me'])) {
-    echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left 
-                    class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
-                    </table></td><tr>\n";
+	elseif (isset($_COOKIE['remember_me'])) {
+		echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
+					  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left 
+						class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
+						</table></td><tr>\n";
+	}
 }
 
 echo "        <tr><td height=7></td></tr>\n";
@@ -267,11 +283,12 @@ echo "        <tr><td height=90%></td></tr>\n";
 echo "      </table></td>\n";
 
 if ($request == 'POST') {
-
+	
     // signin/signout data passed over from timeclock.php //
 
     $inout = $_POST['left_inout'];
-    $notes = ereg_replace("[^[:alnum:] \,\.\?-]","",strtolower($_POST['left_notes']));
+    //$notes = ereg_replace("[^[:alnum:] \,\.\?-]","",strtolower($_POST['left_notes']));
+	$notes = addslashes($_POST['left_notes']);
 
     // begin post validation //
 
@@ -352,20 +369,13 @@ if ($request == 'POST') {
         include 'footer.php';
         exit;
     }
-
+	
     @$fullname = addslashes($fullname);
     @$displayname = addslashes($displayname);
 
     // configure timestamp to insert/update //
 
-    $time = time();
-    $hour = gmdate('H',$time);
-    $min = gmdate('i',$time);
-    $sec = gmdate('s',$time);
-    $month = gmdate('m',$time);
-    $day = gmdate('d',$time);
-    $year = gmdate('Y',$time);
-    $tz_stamp = mktime ($hour, $min, $sec, $month, $day, $year);
+    $tz_stamp = time();
 
     if ($use_passwd == "no") {
 
@@ -375,9 +385,11 @@ if ($request == 'POST') {
             $sel_result = mysql_query($sel_query);
 
             while ($row=mysql_fetch_array($sel_result)) {
-                $fullname = stripslashes("".$row["empfullname"]."");
+                //$fullname = stripslashes("".$row["empfullname"]."");
+				$fullname = "".$row["empfullname"]."";
                 $fullname = addslashes($fullname);
             }
+			
         }
 
         if (strtolower($ip_logging) == "yes") {
@@ -406,10 +418,11 @@ if ($request == 'POST') {
         while ($row=mysql_fetch_array($sel_result)) {
             $tmp_password = "".$row["employee_passwd"]."";
             $fullname = "".$row["empfullname"]."";
+			$fullname = addslashes($fullname);
         }
 
-        $fullname = stripslashes($fullname);
-        $fullname = addslashes($fullname);
+        //$fullname = stripslashes($fullname);
+        //$fullname = addslashes($fullname);
 
     } else {
 

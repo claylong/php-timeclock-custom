@@ -40,7 +40,7 @@ $db_prefix = "";
    blank will cause PHP Timeclock to reject everyone attempting to connect to it.
    Default is "no". */
 
-$restrict_ips = "no";
+$restrict_ips = "yes";
 
 
 /* Insert the networks or ip addresses you wish to allow to connect to PHP Timeclock
@@ -62,7 +62,7 @@ $restrict_ips = "no";
    example --> $allowed_networks = array("10.0.0.4","192.168.1.[11-20]","192.168.4.0/24","192.0.0.0/8");
 */
 
-$allowed_networks = array();
+$allowed_networks = array("192.168.1.[1-254]","127.0.0.1");
 
 
 /* Choose "yes" if you want to disable the Edit System Settings page within PHP 
@@ -81,10 +81,20 @@ $disable_sysedit = "no";
 $use_passwd = "no";
 
 
+/* Choose whether to use IIS integrated ActiveDirectory Authentication. */
+
+$use_ad_auth = "yes";
+
+
+/* Determines whether a dropdown is displayed with all users listed or not */
+
+$show_user_dropdown = "no";
+
+
 /* If you only want certain users to have the ability to view and run the reports, 
    change $use_reports_password to "yes". Default is "no"; */
 
-$use_reports_password = "no";
+$use_reports_password = "yes";
 
 
 /* Enable the option to log the ip addresses of the connecting computers when users
@@ -162,7 +172,7 @@ $display_current_users = "no";
 /* Show a Display Name instead of a Username for each user on the main page.
    Default is "no". */
 
-$show_display_name = "no";
+$show_display_name = "yes";
 
 
 /* Display punch-in/out times for only a certain office on the main page of the application.
@@ -219,13 +229,13 @@ $color2 = "#FBFBFB";
    them to -- websites, other web-based applications, etc. Default number of links is 6.
    Set $links to "none" to ignore this option. Ex: $links = "none"; */
 
-$links = array("http://slashdot11.org/","http://slashdot22.org/","http://slashdot33.org/","http://slashdot44.org/","http://slashdot55.org/","http://slashdot66.org/");
+$links = "none";
 
 
 /* Insert/change/delete below the display names for the links you inserted above. 
    If $links is set to "none", this option is ignored. */
 
-$display_links = array("Book a Meeting Room","Google News","Mailing Lists","Slashdot","Vacation Calendar");
+$display_links = "none";
 
 
 /* --- REPORTING INFO --- */
@@ -279,13 +289,13 @@ $report_end_time = "23:59";
    usernames in the system, and a triple dropdown works well if multiple offices and/or 
    groups are in the system. Default is "no". */
 
-$username_dropdown_only = "no";
+$username_dropdown_only = "yes";
 
 
 /* Choose whether to print displaynames or usernames for each user when reports are run.
    Options for this variable are "user" and "display". Default is "user". */
 
-$user_or_display = "user";
+$user_or_display = "display";
 
 
 /* Choose whether to include in the reports the ip addresses of the systems that connect to 
@@ -358,7 +368,7 @@ $app_version = "1.04";
 /* Sets the title in the header. This is what the page will be named by default when you
    make a "favorite" or "bookmark" in your browser. Change as you see fit. */
 
-$title = "$app_name $app_version";
+$title = "GBS Timeclock";
 
 
 /* --- DO NOT CHANGE ANYTHING BELOW THIS LINE!!! --- */

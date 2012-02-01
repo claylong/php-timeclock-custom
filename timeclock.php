@@ -6,7 +6,7 @@ include 'header.php';
 
 if (!isset($_GET['printer_friendly'])) {
 
-    if (isset($_SESSION['valid_user'])) {
+    if (isset($_SESSION['valid_admin'])) {
         $set_logout = "1";
     }
 
@@ -60,8 +60,8 @@ if ($sortdirection == "asc") {
 if (($display_current_users == "yes") && ($display_office == "all") && ($display_group == "all")) {
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
-    $a = $current_users_date + $calc - @$tzo;
-    $b = $current_users_date - @$tzo;
+    $a = $current_users_date + $calc;
+    $b = $current_users_date;
 
     $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
               from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
@@ -76,8 +76,8 @@ elseif (($display_current_users == "yes") && ($display_office != "all") && ($dis
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
-    $a = $current_users_date + $calc - @$tzo;
-    $b = $current_users_date - @$tzo;
+    $a = $current_users_date + $calc;
+    $b = $current_users_date;
 
     $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
               from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
@@ -93,8 +93,8 @@ elseif (($display_current_users == "yes") && ($display_office == "all") && ($dis
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
-    $a = $current_users_date + $calc - @$tzo;
-    $b = $current_users_date - @$tzo;
+    $a = $current_users_date + $calc;
+    $b = $current_users_date;
 
     $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
               from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
@@ -110,8 +110,8 @@ elseif (($display_current_users == "yes") && ($display_office != "all") && ($dis
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
-    $a = $current_users_date + $calc - @$tzo;
-    $b = $current_users_date - @$tzo;
+    $a = $current_users_date + $calc;
+    $b = $current_users_date;
 
     $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
               from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
@@ -170,15 +170,8 @@ elseif (($display_current_users == "no") && ($display_office != "all") && ($disp
 }
 
 $time = time();
-$tclock_hour = gmdate('H',$time);
-$tclock_min = gmdate('i',$time);
-$tclock_sec = gmdate('s',$time);
-$tclock_month = gmdate('m',$time);
-$tclock_day = gmdate('d',$time);
-$tclock_year = gmdate('Y',$time);
-$tclock_stamp = mktime ($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
 
-$tclock_stamp = $tclock_stamp + @$tzo;
+$tclock_stamp = $time;
 $tclock_time = date($timefmt, $tclock_stamp);
 $tclock_date = date($datefmt, $tclock_stamp);
 $report_name="Current Status Report";

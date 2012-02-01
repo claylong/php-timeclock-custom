@@ -18,23 +18,28 @@ if (isset($_POST['login_userid']) && (isset($_POST['login_password']))) {
 
     while ($row=mysql_fetch_array($result)) {
 
-        $admin_username = "".$row['empfullname']."";
-        $admin_password = "".$row['employee_passwd']."";
+        $username = "".$row['empfullname']."";
+        $password = "".$row['employee_passwd']."";
         $admin_auth = "".$row['admin']."";
+		$report_auth = "".$row['report']."";
         $time_admin_auth = "".$row['time_admin']."";
     }  
 
-    if (($login_userid == @$admin_username) && ($login_password == @$admin_password) && ($admin_auth == "1")) {
+	if (($login_userid == @$username) && ($login_password == @$password))
         $_SESSION['valid_user'] = $login_userid;
-    }
+	
+    if (($login_userid == @$username) && ($login_password == @$password) && ($admin_auth == "1"))
+        $_SESSION['valid_admin'] = $login_userid;
+	
+	if ($report_auth == "1")
+		$_SESSION['valid_reports_user'] = stripslashes($tmp_username);
 
-    elseif (($login_userid == @$admin_username) && ($login_password == @$admin_password) && ($time_admin_auth == "1")) {
+    if (($login_userid == @$username) && ($login_password == @$password) && ($time_admin_auth == "1"))
         $_SESSION['time_admin_valid_user'] = $login_userid;
-    }
-
+	
 }
 
-if (isset($_SESSION['valid_user'])) {
+if (isset($_SESSION['valid_admin'])) {
     echo "<script type='text/javascript' language='javascript'> window.location.href = 'admin/index.php';</script>";
     exit;
 }

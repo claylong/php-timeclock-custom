@@ -9,7 +9,7 @@ include 'header.php';
 include 'topmain.php';
 echo "<title>$title - Delete Status</title>\n";
 
-if (!isset($_SESSION['valid_user'])) {
+if (!isset($_SESSION['valid_admin'])) {
 
 echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
 echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";

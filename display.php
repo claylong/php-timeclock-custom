@@ -84,7 +84,7 @@ while ($row=mysql_fetch_array($result)) {
 
     // display the query results //
 
-    $display_stamp = $display_stamp + @$tzo;
+    $display_stamp = $display_stamp;
     $time = date($timefmt, $display_stamp);
     $date = date($datefmt, $display_stamp);
 

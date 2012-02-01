@@ -2,10 +2,15 @@
 session_start();
 
 if (isset($_SESSION['valid_user'])) {unset($_SESSION['valid_user']);}
+if (isset($_SESSION['valid_admin'])) {unset($_SESSION['valid_admin']);}
 if (isset($_SESSION['valid_reports_user'])) {unset($_SESSION['valid_reports_user']);}
 if (isset($_SESSION['time_admin_valid_user'])) {unset($_SESSION['time_admin_valid_user']);}
 
+//var_dump($_SESSION)."\n";
+
 session_destroy();
+
+//var_dump($_SESSION); exit;
 
 echo "<script type='text/javascript' language='javascript'> window.location.href = 'index.php';</script>";
 ?>  

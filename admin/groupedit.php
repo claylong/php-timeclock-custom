@@ -10,7 +10,7 @@ $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-if (!isset($_SESSION['valid_user'])) {
+if (!isset($_SESSION['valid_admin'])) {
 
 echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
 echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
@@ -371,7 +371,7 @@ $dupe = '1';
 }
 }
 
-if ((empty($post_groupname)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) || (!empty($string))) {
+if ((empty($post_groupname)) || (!preg_match ('/^([[:alnum:]]| |-|_|\.)+$/i', $post_groupname)) || (!empty($string))) {
 $evil_group = '1';
 }
 
@@ -446,7 +446,7 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     A Group Name is required.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) {
+elseif (!preg_match ('/^([[:alnum:]]| |-|_|\.)+$/i', $post_groupname)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>

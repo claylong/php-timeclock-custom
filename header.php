@@ -22,7 +22,7 @@ if ($restrict_ips == "yes") {
             $allowed = TRUE;
         }
     }
-    if (!isset($allowed)) {
+    if (!isset($allowed) && !empty($_POST)) {
         echo "You are not authorized to view this page."; exit;
     }
 }
@@ -48,6 +48,51 @@ while (@$row = mysql_fetch_array($db_version_result)) {
     @$my_dbversion = "".$row["dbversion"]."";
 }
 
+
+// perform AD authentication, if approrpriate
+if (($use_ad_auth == 'yes' && !isset($_SESSION['valid_user']))) {
+
+	if ((isset($_SERVER['AUTH_USER']))) {
+		// login
+		
+		$auth_user = explode("\\", $_SERVER['AUTH_USER']);
+		$auth_user = $auth_user[1];
+		
+		$query = "select * from ".$db_prefix."employees where empfullname = '".$auth_user."'";
+		$emp_name_result = mysql_query($query);
+		
+		if (mysql_num_rows($emp_name_result) == 0) {
+			echo "Username is not in the database.\n"; exit;
+		}
+		
+		while ($row = mysql_fetch_array($emp_name_result)) {
+			$tmp_displayname = "".$row['displayname']."";
+			$tmp_username = "".$row['empfullname']."";
+			$admin_auth = "".$row['admin']."";
+			$report_auth = "".$row['reports']."";
+			$time_admin_auth = "".$row['time_admin']."";
+		}
+		$_SESSION['valid_user_displayname'] = stripslashes($tmp_displayname);
+		
+		if ($admin_auth == "1")
+			$_SESSION['valid_admin'] = $admin_auth;
+			
+		if ($report_auth == "1")
+			$_SESSION['valid_reports_user'] = $report_auth;
+
+		if ($time_admin_auth == "1")
+			$_SESSION['time_admin_valid_user'] = $time_admin_auth;
+		
+		$_SESSION['valid_user'] = stripslashes($tmp_username);
+
+	} else {
+		// logout?
+		session_unset();
+		echo "<script type='text/javascript' language='javascript'> window.location.href = 'index.php';</script>";
+	}
+}
+
+
 // include css and timezone offset//
 
 if (($use_client_tz == "yes") && ($use_server_tz == "yes")) {
@@ -63,6 +108,8 @@ if ($use_client_tz == "yes") {
         echo "<meta http-equiv='refresh' content='0;URL=timeclock.php'>\n";
     }
 }
+
+echo "<script language='javascript'>function toggleVisibility(id) {  var e = document.getElementById(id); if (e.style.display == '') e.style.display = 'none'; else e.style.display = ''; } </script>";
 
 echo "<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />\n";
 echo "<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />\n";

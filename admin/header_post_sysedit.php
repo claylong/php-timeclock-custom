@@ -11,7 +11,7 @@ if (empty($connecting_ip)) {
 }
 
 // determine if connecting ip address is allowed to connect to PHP Timeclock //
-
+/*
 if ($restrict_ips == "yes") {
   for ($x=0; $x<count($allowed_networks); $x++) {
     $is_allowed = ip_range($allowed_networks[$x], $connecting_ip);
@@ -23,6 +23,7 @@ if ($restrict_ips == "yes") {
     echo "You are not authorized to view this page."; exit;
   }
 }
+*/
 
 // check for correct db version //
 

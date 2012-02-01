@@ -147,7 +147,7 @@ for ($x=0;$x<$employees_cnt;$x++) {
 
             // display the query results //
 
-            $display_stamp = $display_stamp + @$tzo;
+            $display_stamp = $display_stamp;
             $time = date($timefmt, $display_stamp);
             $date = date($datefmt, $display_stamp);
 
@@ -343,7 +343,7 @@ for ($x=0;$x<$employees_cnt;$x++) {
 
       $info_fullname[] = stripslashes("".$row['fullname']."");
       $info_inout[] = "".$row['inout']."";
-      $info_timestamp[] = "".$row['timestamp']."" + $tzo;
+      $info_timestamp[] = "".$row['timestamp']."";
       $info_notes[] = "".$row['notes']."";
       $info_ipaddress[] = "".$row['ipaddress']."";
       $punchlist_in_or_out[] = "".$row['in_or_out']."";
@@ -423,7 +423,7 @@ for ($x=0;$x<$employees_cnt;$x++) {
               } else {
                   $punch_cnt++;
                   if ($y == $info_cnt - 1) {
-                      if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($info_date[$y] == $rpt_date)) {
+                      if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp)) && ($info_date[$y] == $rpt_date)) {
                           if ($status == "in") {
                               $secs = $secs + ($rpt_stamp - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
                           } elseif ($status == "out") {
@@ -432,9 +432,9 @@ for ($x=0;$x<$employees_cnt;$x++) {
                           $currently_punched_in = '1';
                       } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($info_date[$y] == $rpt_date)) {
                           if ($status == "in") {
-                              $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
+                              $secs = $secs + (($to_timestamp) - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
                           } elseif ($status == "out") {
-                              $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                              $secs = $secs + (($to_timestamp) - $info_timestamp[$y]);
                           }
                           $currently_punched_in = '1';
                       } else {
@@ -625,11 +625,11 @@ for ($x=0;$x<$employees_cnt;$x++) {
                   }
               } else {
                   if ($y == $info_cnt - 1) {
-                      if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($info_date[$y] == $rpt_date)) {
+                      if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp)) && ($info_date[$y] == $rpt_date)) {
                           $secs = $secs + ($rpt_stamp - $info_timestamp[$y]);
                           $currently_punched_in = '1';
                       } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($info_date[$y] == $rpt_date)) {
-                          $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                          $secs = $secs + (($to_timestamp) - $info_timestamp[$y]);
                           $currently_punched_in = '1';
                       } else {
                           $secs = $secs + (($info_end_time[$y] + 1) - $info_timestamp[$y]);
@@ -698,7 +698,7 @@ for ($x=0;$x<$employees_cnt;$x++) {
               $out = 1;
               $status = "out";
               if ($info_date[$y] == $from_date) {
-                  $secs = $info_timestamp[$y] - $from_timestamp - $tzo;
+                  $secs = $info_timestamp[$y] - $from_timestamp;
               } else {
                   $secs = $info_timestamp[$y] - $info_start_time[$y];
               }
@@ -762,11 +762,11 @@ for ($x=0;$x<$employees_cnt;$x++) {
               $in_time = $info_timestamp[$y];
               $previous_days_end_time = $info_end_time[$y] + 1;
               if ($y == $info_cnt - 1) {
-                  if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($info_date[$y] == $rpt_date)) {
+                  if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp)) && ($info_date[$y] == $rpt_date)) {
                       $secs = $secs + ($rpt_stamp - $info_timestamp[$y]);
                       $currently_punched_in = '1';
                   } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($info_date[$y] == $rpt_date)) {
-                      $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                      $secs = $secs + (($to_timestamp) - $info_timestamp[$y]);
                       $currently_punched_in = '1';
                   } else {
                       $secs = $secs + (($info_end_time[$y] + 1) - $info_timestamp[$y]);
